@@ -15,7 +15,6 @@ import { GrievanceDetail } from './pages/GrievanceDetail'
 import { Profile } from './pages/Profile'
 
 export default function App() {
-  // Testing ke liye login bypass (true rakha hai)
   const [authed, setAuthed] = useState(true)
 
   if (!authed) {
@@ -28,11 +27,9 @@ export default function App() {
         <Route path="/" element={<ServiceCatalog />} />
         <Route path="/apply/:serviceId" element={<DynamicForm />} />
 
-        {/* 1. Original My Applications View */}
         <Route path="/applications" element={<ApplicationTracking />} />
         <Route path="/applications/:id" element={<ApplicationDetail />} />
 
-        {/* 2. Naya Dedicated Drawer-based Live Tracker */}
         <Route path="/tracking" element={<Tracking />} />
 
         <Route path="/documents" element={<DocumentVault />} />

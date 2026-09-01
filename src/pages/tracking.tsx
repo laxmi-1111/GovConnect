@@ -9,7 +9,26 @@ import {
   Search
 } from 'lucide-react';
 
-const mockApplications = [
+interface TimelineItem {
+  stage: string;
+  date: string;
+  status: 'completed' | 'current' | 'action_required' | 'pending';
+  remark: string;
+}
+
+interface Application {
+  id: string;
+  service: string;
+  department: string;
+  applicant: string;
+  appliedDate: string;
+  status: 'under_review' | 'action_required' | 'issued';
+  progressPercent: number;
+  currentStage: string;
+  timeline: TimelineItem[];
+}
+
+const mockApplications: Application[] = [
   {
     id: 'GC-2026-084213',
     service: 'Domicile Certificate',
@@ -30,7 +49,7 @@ const mockApplications = [
         stage: 'Document Verification',
         date: '25 Aug 2026, 09:30 AM',
         status: 'completed',
-        remark: 'Aadhaar, Ration Card, and Proof of Residence verified online.'
+        remark: 'Proof of Identity, Ration Card, and Proof of Residence verified online.'
       },
       {
         stage: 'Field / Local Inquiry',
@@ -109,7 +128,7 @@ const mockApplications = [
 ];
 
 export default function Tracking() {
-  const [selectedApp, setSelectedApp] = useState(null);
+  const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredApps = mockApplications.filter(app => 
@@ -117,7 +136,7 @@ export default function Tracking() {
     app.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: Application['status']) => {
     switch (status) {
       case 'under_review':
         return (
@@ -136,7 +155,7 @@ export default function Tracking() {
       case 'issued':
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <CheckCircle2 size={13} className="text-emerald-600" />
+            <CheckCircle2 size={12} className="text-emerald-600" />
             Certificate Issued
           </span>
         );
@@ -194,7 +213,6 @@ export default function Tracking() {
         ))}
       </div>
 
-      {/* Slide-in Drawer */}
       {selectedApp && (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div 
@@ -205,7 +223,6 @@ export default function Tracking() {
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
             <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
               
-              {/* Drawer Header */}
               <div className="p-6 border-b border-slate-100 flex items-start justify-between bg-slate-50/50">
                 <div>
                   <span className="text-[11px] uppercase tracking-wider font-semibold text-slate-500">Live Tracking File</span>
@@ -220,10 +237,7 @@ export default function Tracking() {
                 </button>
               </div>
 
-              {/* Drawer Body */}
               <div className="p-6 overflow-y-auto flex-1 space-y-6">
-                
-                {/* Meta details */}
                 <div className="grid grid-cols-2 gap-3 p-3.5 bg-slate-50 rounded-lg border border-slate-100 text-xs">
                   <div>
                     <span className="text-slate-400 block mb-0.5">Department</span>
@@ -235,7 +249,6 @@ export default function Tracking() {
                   </div>
                 </div>
 
-                {/* Progress Bar Header */}
                 <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-100">
                   <div className="flex items-center justify-between text-xs mb-1.5">
                     <span className="font-semibold text-slate-700">Application Progress</span>
@@ -249,20 +262,18 @@ export default function Tracking() {
                           : selectedApp.status === 'action_required' 
                           ? 'bg-amber-500' 
                           : 'bg-blue-600'
-                      }`}
+                      }`} 
                       style={{ width: `${selectedApp.progressPercent}%` }}
                     />
                   </div>
                 </div>
 
-                {/* Vertical Timeline with Continuous Connecting Line */}
                 <div>
                   <h4 className="text-xs uppercase tracking-wider font-semibold text-slate-500 mb-4">
                     Status Timeline
                   </h4>
 
                   <div className="relative">
-                    {/* Continuous Vertical Line running through dots */}
                     <div className="absolute left-[9px] top-3 bottom-6 w-0.5 bg-slate-200 z-0" />
 
                     <div className="space-y-6 relative z-10">
@@ -273,8 +284,6 @@ export default function Tracking() {
 
                         return (
                           <div key={idx} className="flex items-start gap-4">
-                            
-                            {/* Circle Node */}
                             <div className="flex-shrink-0 mt-0.5">
                               {isCompleted && (
                                 <div className="w-5 h-5 rounded-full bg-emerald-500 border-2 border-emerald-500 flex items-center justify-center text-white ring-4 ring-white shadow-sm">
@@ -296,7 +305,6 @@ export default function Tracking() {
                               )}
                             </div>
 
-                            {/* Stage Details */}
                             <div className="flex-1">
                               <div className="flex items-baseline justify-between gap-2">
                                 <h5 className={`text-sm font-semibold ${
@@ -310,17 +318,14 @@ export default function Tracking() {
                                 {item.remark}
                               </p>
                             </div>
-
                           </div>
                         );
                       })}
                     </div>
                   </div>
                 </div>
-
               </div>
 
-              {/* Drawer Footer */}
               <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3">
                 <button 
                   onClick={() => setSelectedApp(null)}

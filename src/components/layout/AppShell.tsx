@@ -59,7 +59,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        {/* Desktop Navbar */}
         <nav className="mx-auto hidden max-w-5xl gap-1 px-4 pb-2 sm:flex">
           {NAV_ITEMS.map(({ to, icon: Icon, desktopLabel, labelKey }) => (
             <NavLink
@@ -81,7 +80,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-5xl px-4 pb-24 pt-5 sm:pb-10">{children}</main>
 
-      {/* Mobile Bottom Navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-20 flex border-t border-line bg-white sm:hidden">
         {NAV_ITEMS.map(({ to, icon: Icon, mobileLabel, labelKey }) => (
           <NavLink
