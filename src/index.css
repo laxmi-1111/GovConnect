@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    font-family: 'IBM Plex Sans', 'IBM Plex Sans Devanagari', system-ui, sans-serif;
+  }
+  :focus-visible {
+    outline: 2px solid #1B3A6B;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .transition-standard {
+    transition: all 150ms ease;
+  }
+}
