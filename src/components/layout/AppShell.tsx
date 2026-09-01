@@ -1,15 +1,16 @@
 import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
-import { LayoutGrid, FileClock, FolderLock, ShieldCheck, MessageSquareWarning, Bell, UserRound } from 'lucide-react'
+import { LayoutGrid, FileClock, SearchCheck, FolderLock, ShieldCheck, MessageSquareWarning, Bell, UserRound } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 import { useAppData } from '../../context/AppDataContext'
 
 const NAV_ITEMS = [
-  { to: '/', icon: LayoutGrid, labelKey: 'home' },
-  { to: '/applications', icon: FileClock, labelKey: 'tracking' },
-  { to: '/documents', icon: FolderLock, labelKey: 'vault' },
-  { to: '/consents', icon: ShieldCheck, labelKey: 'consents' },
-  { to: '/grievances', icon: MessageSquareWarning, labelKey: 'grievances' },
+  { to: '/', icon: LayoutGrid, desktopLabel: 'Services', mobileLabel: 'Services', labelKey: 'home' },
+  { to: '/applications', icon: FileClock, desktopLabel: 'My Applications', mobileLabel: 'Applications', labelKey: 'tracking' },
+  { to: '/tracking', icon: SearchCheck, desktopLabel: 'Track My Application', mobileLabel: 'Track' },
+  { to: '/documents', icon: FolderLock, desktopLabel: 'My Documents', mobileLabel: 'Documents', labelKey: 'vault' },
+  { to: '/consents', icon: ShieldCheck, desktopLabel: 'My Consents', mobileLabel: 'Consents', labelKey: 'consents' },
+  { to: '/grievances', icon: MessageSquareWarning, desktopLabel: 'Grievances', mobileLabel: 'Grievances', labelKey: 'grievances' },
 ]
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -58,20 +59,21 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
 
+        {/* Desktop Navbar */}
         <nav className="mx-auto hidden max-w-5xl gap-1 px-4 pb-2 sm:flex">
-          {NAV_ITEMS.map(({ to, icon: Icon, labelKey }) => (
+          {NAV_ITEMS.map(({ to, icon: Icon, desktopLabel, labelKey }) => (
             <NavLink
               key={to}
               to={to}
               end={to === '/'}
               className={({ isActive }) =>
                 `flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-standard ${
-                  isActive ? 'bg-navy-50 text-navy-700' : 'text-ink/60 hover:bg-navy-50 hover:text-navy-700'
+                  isActive ? 'bg-navy-50 text-navy-700 font-semibold' : 'text-ink/60 hover:bg-navy-50 hover:text-navy-700'
                 }`
               }
             >
               <Icon size={15} />
-              {t(labelKey)}
+              {labelKey ? t(labelKey) : desktopLabel}
             </NavLink>
           ))}
         </nav>
@@ -79,20 +81,21 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-5xl px-4 pb-24 pt-5 sm:pb-10">{children}</main>
 
+      {/* Mobile Bottom Navigation */}
       <nav className="fixed inset-x-0 bottom-0 z-20 flex border-t border-line bg-white sm:hidden">
-        {NAV_ITEMS.map(({ to, icon: Icon, labelKey }) => (
+        {NAV_ITEMS.map(({ to, icon: Icon, mobileLabel, labelKey }) => (
           <NavLink
             key={to}
             to={to}
             end={to === '/'}
             className={({ isActive }) =>
               `flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-medium ${
-                isActive ? 'text-navy-700' : 'text-ink/45'
+                isActive ? 'text-navy-700 font-semibold' : 'text-ink/45'
               }`
             }
           >
             <Icon size={18} />
-            {t(labelKey)}
+            {labelKey ? t(labelKey) : mobileLabel}
           </NavLink>
         ))}
       </nav>

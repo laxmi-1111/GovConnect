@@ -8,13 +8,15 @@ import { Consents } from './pages/Consents'
 import { DocumentVault } from './pages/DocumentVault'
 import { ApplicationTracking } from './pages/ApplicationTracking'
 import { ApplicationDetail } from './pages/ApplicationDetail'
+import Tracking from './pages/tracking'
 import { Notifications } from './pages/Notifications'
 import { Grievances } from './pages/Grievances'
 import { GrievanceDetail } from './pages/GrievanceDetail'
 import { Profile } from './pages/Profile'
 
 export default function App() {
-  const [authed, setAuthed] = useState(false)
+  // Testing ke liye login bypass (true rakha hai)
+  const [authed, setAuthed] = useState(true)
 
   if (!authed) {
     return <Login onComplete={() => setAuthed(true)} />
@@ -25,10 +27,16 @@ export default function App() {
       <Routes>
         <Route path="/" element={<ServiceCatalog />} />
         <Route path="/apply/:serviceId" element={<DynamicForm />} />
-        <Route path="/consents" element={<Consents />} />
-        <Route path="/documents" element={<DocumentVault />} />
+
+        {/* 1. Original My Applications View */}
         <Route path="/applications" element={<ApplicationTracking />} />
         <Route path="/applications/:id" element={<ApplicationDetail />} />
+
+        {/* 2. Naya Dedicated Drawer-based Live Tracker */}
+        <Route path="/tracking" element={<Tracking />} />
+
+        <Route path="/documents" element={<DocumentVault />} />
+        <Route path="/consents" element={<Consents />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/grievances" element={<Grievances />} />
         <Route path="/grievances/:id" element={<GrievanceDetail />} />
