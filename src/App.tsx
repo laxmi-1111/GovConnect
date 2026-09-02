@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { Login } from './pages/Login'
 import { ServiceCatalog } from './pages/ServiceCatalog'
@@ -15,7 +15,7 @@ import { GrievanceDetail } from './pages/GrievanceDetail'
 import { Profile } from './pages/Profile'
 
 export default function App() {
-  const [authed, setAuthed] = useState(true)
+  const [authed, setAuthed] = useState<boolean>(false)
 
   if (!authed) {
     return <Login onComplete={() => setAuthed(true)} />
@@ -38,7 +38,6 @@ export default function App() {
         <Route path="/grievances" element={<Grievances />} />
         <Route path="/grievances/:id" element={<GrievanceDetail />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppShell>
   )
